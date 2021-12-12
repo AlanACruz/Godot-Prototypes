@@ -1,0 +1,91 @@
+[gd_scene load_steps=17 format=2]
+
+[ext_resource path="res://player.gd" type="Script" id=1]
+[ext_resource path="res://dodge_assets/art/playerGrey_up2.png" type="Texture" id=2]
+[ext_resource path="res://dodge_assets/art/enemyWalking_2.png" type="Texture" id=3]
+[ext_resource path="res://dodge_assets/art/enemyWalking_1.png" type="Texture" id=4]
+[ext_resource path="res://dodge_assets/art/playerGrey_walk2.png" type="Texture" id=5]
+[ext_resource path="res://dodge_assets/art/playerGrey_walk1.png" type="Texture" id=6]
+[ext_resource path="res://dodge_assets/art/playerGrey_up1.png" type="Texture" id=7]
+[ext_resource path="res://mob.gd" type="Script" id=8]
+[ext_resource path="res://dodge_assets/art/enemyFlyingAlt_2.png" type="Texture" id=9]
+[ext_resource path="res://dodge_assets/art/enemyFlyingAlt_1.png" type="Texture" id=10]
+[ext_resource path="res://dodge_assets/art/enemySwimming_1.png" type="Texture" id=11]
+[ext_resource path="res://dodge_assets/art/enemySwimming_2.png" type="Texture" id=12]
+
+[sub_resource type="SpriteFrames" id=1]
+resource_local_to_scene = true
+animations = [ {
+"frames": [ ExtResource( 7 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "up",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 5 ) ],
+"loop": true,
+"name": "walk",
+"speed": 5.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 26.3195
+height = 15.1392
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 4 ), ExtResource( 3 ) ],
+"loop": true,
+"name": "walk",
+"speed": 3.0
+}, {
+"frames": [ ExtResource( 11 ), ExtResource( 12 ) ],
+"loop": true,
+"name": "swim",
+"speed": 3.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "fly",
+"speed": 3.0
+} ]
+
+[sub_resource type="CapsuleShape2D" id=4]
+radius = 47.2773
+height = 38.76
+
+[node name="Node2D" type="Node2D"]
+rotation = 0.00414012
+
+[node name="Player" type="Area2D" parent="."]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Player"]
+scale = Vector2( 0.5, 0.5 )
+frames = SubResource( 1 )
+animation = "up"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource( 2 )
+
+[node name="Mob" type="RigidBody2D" parent="."]
+collision_mask = 0
+gravity_scale = 0.0
+script = ExtResource( 8 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Mob"]
+frames = SubResource( 3 )
+animation = "walk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mob"]
+rotation = 1.5708
+shape = SubResource( 4 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="Mob"]
+
+[connection signal="body_entered" from="Player" to="Player" method="_on_Player_body_entered"]
