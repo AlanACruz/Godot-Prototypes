@@ -26,6 +26,7 @@ _data = {
 [node name="Main" type="Node"]
 script = ExtResource( 3 )
 Mob = ExtResource( 2 )
+Player = ExtResource( 1 )
 
 [node name="MobTimer" type="Timer" parent="."]
 wait_time = 0.5
@@ -45,5 +46,3 @@ rotation = 4.19095e-09
 curve = SubResource( 1 )
 
 [node name="MobSpawnLocation" type="PathFollow2D" parent="MobPath"]
-
-[node name="Player" parent="." instance=ExtResource( 1 )]
