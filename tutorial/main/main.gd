@@ -2,19 +2,25 @@ extends Node
 
 export (PackedScene) var Mob
 export (PackedScene) var Player
+export (PackedScene) var Hud
 
 var score
+var hud
 
 func _ready():
 	randomize()
 	$MobTimer.connect("timeout", self, "_on_MobTimer_timeout")
 	$ScoreTimer.connect("timeout", self, "_on_ScoreTimer_timeout")
 	$StartTimer.connect("timeout", self, "_on_StartTimer_timeout")
-	new_game()
+	
+	hud = Hud.instance()
+	hud.connect("start_game", self, "new_game")
+	add_child(hud)
 
 func game_over():
 	$ScoreTimer.stop()
 	$MobTimer.stop()
+	hud.show_game_over()
 
 func new_game():
 	
@@ -25,6 +31,9 @@ func new_game():
 	add_child(player)
 	
 	$StartTimer.start()
+	
+	hud.update_score(score)
+	hud.show_message("Get Ready")
 
 func _on_StartTimer_timeout():
 	
@@ -34,6 +43,7 @@ func _on_StartTimer_timeout():
 func _on_ScoreTimer_timeout():
 	
 	score += 1
+	hud.update_score(score)
 
 func _on_MobTimer_timeout():
 	
